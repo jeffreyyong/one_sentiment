@@ -1,0 +1,26 @@
+{{template "pageStart.html" .}}
+<div class="title">
+<h2>Please Call a Number to See Magic</h2>
+</div>
+<form class="form-horizontal calling-number" action="/asr/call" method="post">
+  <div class="row form-group">
+    <label for="destination" class="col-lg-2 control-label text-right">Call</label>
+    <div class="col-lg-4">
+      <input type="text" id="destination" name="destination" class="form-control">
+    </div>
+  </div>
+  <div class="row form-group">
+    <label for="language" class="col-lg-2 control-label text-right">Language</label>
+    <div class="col-lg-2">
+      <select name="language" id="language" class="form-control">
+        <option value="en-GB">British English</option>
+        <option value="fr-FR">French</option>
+        <option value="cmn-Hans-CN">简体中文</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-lg-8 col-lg-offset-2">
+    <button type="submit" class="btn btn-lg call-primary">Call ASR</button>
+  </div>
+</form>
+{{template "pageEnd.html" .}}
