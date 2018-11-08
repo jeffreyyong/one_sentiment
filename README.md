@@ -25,3 +25,4 @@ The application will have the following endpoints:
 - `PUT /asr/:phone_number/:id`: call VAPI with the NCCO for the ASR scenario
 - `GET /result/:id`: send the current result for the `id`
 - `POST /callback`: to receive VAPI callbacks
+- `GET /ncco`: return the NCCO to trigger ASR
