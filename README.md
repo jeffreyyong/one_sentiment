@@ -26,3 +26,9 @@ The application will have the following endpoints:
 - `GET /result/:id`: send the current result for the `id`
 - `POST /callback`: to receive VAPI callbacks
 - `GET /ncco`: return the NCCO to trigger ASR
+
+## Running
+```
+go build ./src/app
+./app
+```
