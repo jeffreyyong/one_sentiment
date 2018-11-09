@@ -6,23 +6,32 @@ type Number struct {
 	Language    string `json:"language"`
 }
 
+type vapiNumber struct {
+	Type   string `json:"type"`
+	Number string `json:"number"`
+}
+
 type callRequest struct {
-	ToNumber    []string `json:"to"`
-	FromNumber  string   `json:"from"`
-	NCCOURL     string   `json:"answer_url"`
-	CallbackURL string   `json:"event_url"`
+	ToNumber    []vapiNumber `json:"to"`
+	FromNumber  vapiNumber   `json:"from"`
+	NCCOURL     []string     `json:"answer_url"`
+	CallbackURL []string     `json:"event_url"`
 }
 
 type vapiResponse struct {
 	UUID string `json:"uuid"`
 }
 
-type result {
-	Text string `json:"text"`
+type result struct {
+	Text       string `json:"text"`
+	Confidence string `json:"confidence"`
+}
+
+type speechASR struct {
+	Results []result `json:"results"`
 }
 
 type callback struct {
-	Speech struct {
-		Results []result
-	}
+	UUID   string    `json:"uuid"`
+	Speech speechASR `json:"Speech"`
 }

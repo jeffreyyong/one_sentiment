@@ -31,7 +31,12 @@ func registerRoutes() *gin.Engine {
 
 	r.POST("/asr", func(c *gin.Context) {
 		var number Number
-		c.Bind(&number)
+		err := c.BindJSON(&number)
+		if err != nil {
+			log.Error("Can't read number", err)
+			c.JSON(http.StatusBadRequest, nil)
+			return
+		}
 		uuid := CreateCall(number.Destination)
 
 		c.JSON(http.StatusOK, struct {
@@ -41,14 +46,14 @@ func registerRoutes() *gin.Engine {
 
 	// VAPI endpoints
 	r.POST("/callback", func(c *gin.Context) {
-		var callback Callback
-		c.BindJSON("id", &callback)
-		results = callback.Speech.Results
+		var cb callback
+		c.BindJSON(&cb)
+		cbResults := cb.Speech.Results
 
-		if len(results) < 1 {
+		if len(cbResults) < 1 {
 			log.Error("No result in callback")
 		} else {
-			results[callback.uuid] = results[0]
+			results[cb.UUID] = cbResults[0].Text
 		}
 
 		c.JSON(http.StatusOK, nil)
@@ -56,7 +61,7 @@ func registerRoutes() *gin.Engine {
 
 	r.GET("/ncco", func(c *gin.Context) {
 		uuid := c.Query("uuid")
-		ncco := NewNCCO("[]", "en-GB", uuid, host+"/callback")
+		ncco := NewNCCO("[]", "en-GB", uuid, "http://"+host+"/callback")
 
 		c.Data(http.StatusOK, "application/json; charset=utf-8", []byte(ncco))
 	})

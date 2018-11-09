@@ -8,7 +8,9 @@ const pollResult = async (uuid) => {
         console.log(JSON.stringify(data))
         document.getElementById("result").innerHTML = data.result
     } catch(err) {
-        window.setTimeout(pollResult, 1000)
+        window.setTimeout(() => {
+            pollResult(uuid)
+        }, 1000)
         console.log(err)
     }
 }
@@ -17,9 +19,11 @@ const sendParameters = async () => {
     let language = document.getElementById("language").value
     let number = document.getElementById("destination").value
 
+    document.getElementById('destination').value = ""
+
     let body = {
             language: language,
-            number: number
+            destination: number
         }
     let url ='/asr'
     let param = {
@@ -39,6 +43,13 @@ const sendParameters = async () => {
 
 const main = () => {
     document.getElementById('sendButton').addEventListener("click", sendParameters)
+
+    window.addEventListener('keypress', function (e) {
+        var key = e.which || e.keyCode;
+        if (key === 13) { // 13 is enter
+            sendParameters
+        }
+    });
 }
 
 window.addEventListener("load", main)

@@ -1,5 +1,9 @@
 # Demo application for ASR
 
+## Demo
+
+A demo of the demo app is availaible: http://loadtest.crete.npe:3003/
+
 ## Sequence
 
 ```sequence
@@ -28,7 +32,9 @@ The application will have the following endpoints:
 - `GET /ncco`: return the NCCO to trigger ASR
 
 ## Running
-```
+```bash
 go build ./src/app
+export TOKEN=yourJWTtoken
+env HOST='host:3003' VAPI_ENDPOINT='http://vapiURL/calls/' ./app
 ./app
 ```
