@@ -45,15 +45,18 @@ const sendParameters = async () => {
     pollResult(data.uuid)
 }
 
+const keypress = e => {
+    var key = e.which || e.keyCode;
+    if (key === 13) { // 13 is enter
+        sendParameters()
+    }
+}
+
 const main = () => {
     document.getElementById('sendButton').addEventListener("click", sendParameters)
 
-    document.getElementById('destination').addEventListener('keypress', e => {
-        var key = e.which || e.keyCode;
-        if (key === 13) { // 13 is enter
-            sendParameters()
-        }
-    });
+    document.getElementById('destination').addEventListener('keypress', keypress);
+    document.getElementById('language').addEventListener('keypress', keypress);
 }
 
 window.addEventListener("load", main)
