@@ -8,11 +8,13 @@ import (
 )
 
 var results map[string]string
+var languages map[string]string
 
 func registerRoutes() *gin.Engine {
 
 	r := gin.Default()
 
+	languages = make(map[string]string)
 	results = make(map[string]string)
 	// Serve HTML/JS page
 	r.LoadHTMLGlob("templates/**/*.html")
@@ -38,6 +40,7 @@ func registerRoutes() *gin.Engine {
 			return
 		}
 		uuid := CreateCall(number.Destination)
+		languages[uuid] = number.Language
 
 		c.JSON(http.StatusOK, struct {
 			UUID string `json:"uuid"`
@@ -61,7 +64,7 @@ func registerRoutes() *gin.Engine {
 
 	r.GET("/ncco", func(c *gin.Context) {
 		uuid := c.Query("uuid")
-		ncco := NewNCCO("[]", "en-GB", uuid, "http://"+host+"/callback")
+		ncco := NewNCCO("[]", languages[uuid], uuid, "http://"+host+"/callback")
 
 		c.Data(http.StatusOK, "application/json; charset=utf-8", []byte(ncco))
 	})
