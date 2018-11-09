@@ -1,7 +1,14 @@
 const modal = document.getElementById('myModal')
+let stopPinging = {}
+let currentUUID = ""
 
 const pollResult = async (uuid) => {
     let url ='/result/' + uuid
+    currentUUID = uuid
+
+    if (stop.uuid) {
+        return
+    }
 
     try {
         let response = await fetch(url)
@@ -40,11 +47,14 @@ const sendParameters = async () => {
         method: 'POST',
         body: JSON.stringify(body)
     }
-
+    
     let response = await fetch(url, param)
     let data = await response.json()
     console.log(JSON.stringify(data))
-    pollResult(data.uuid)
+
+    if (data.uuid !== "") {
+        pollResult(data.uuid)
+    }
 
     return true
 }
@@ -54,6 +64,16 @@ const keypress = e => {
     if (key === 13) { // 13 is enter
         sendParameters()
     }
+}
+
+const cleanPage = () => {
+    stop.currentUUID = true
+    modal.style.display = ""
+    result = document.getElementById("result")
+    result.innerText = ""
+    img = result.appendChild(document.createElement('img'))
+    img.src = "/public/Images/Loading_icon.gif"
+    img.alt = "Loading"
 }
 
 const main = () => {
@@ -68,13 +88,13 @@ const main = () => {
 
     // When the user clicks on <span> (x), close the modal
     span.onclick = () => {
-        location.reload()
+        cleanPage()
     }
 
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = (event) => {
         if (event.target == modal) {
-            location.reload()
+            cleanPage()
         }
     }
 }
