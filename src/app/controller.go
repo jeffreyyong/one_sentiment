@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 )
 
 var results map[string]string
@@ -31,8 +32,7 @@ func registerRoutes() *gin.Engine {
 	r.POST("/asr", func(c *gin.Context) {
 		var number Number
 		c.Bind(&number)
-		uuid := "test"
-		results["test"] = "salut test"
+		uuid := CreateCall(number.Destination)
 
 		c.JSON(http.StatusOK, struct {
 			UUID string `json:"uuid"`
@@ -41,14 +41,24 @@ func registerRoutes() *gin.Engine {
 
 	// VAPI endpoints
 	r.POST("/callback", func(c *gin.Context) {
-		id := c.Param("id")
-		results[id] = "test result"
+		var callback Callback
+		c.BindJSON("id", &callback)
+		results = callback.Speech.Results
 
-		c.JSON(http.StatusOK, struct{}{})
+		if len(results) < 1 {
+			log.Error("No result in callback")
+		} else {
+			results[callback.uuid] = results[0]
+		}
+
+		c.JSON(http.StatusOK, nil)
 	})
 
 	r.GET("/ncco", func(c *gin.Context) {
-		c.JSON(http.StatusOK, struct{}{})
+		uuid := c.Query("uuid")
+		ncco := NewNCCO("[]", "en-GB", uuid, host+"/callback")
+
+		c.Data(http.StatusOK, "application/json; charset=utf-8", []byte(ncco))
 	})
 
 	r.Static("/public", "./public")
