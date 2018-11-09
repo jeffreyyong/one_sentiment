@@ -19,6 +19,10 @@ const sendParameters = async () => {
     let language = document.getElementById("language").value
     let number = document.getElementById("destination").value
 
+    if (number === "") {
+        return
+    }
+
     document.getElementById('destination').value = ""
 
     let body = {
@@ -44,10 +48,10 @@ const sendParameters = async () => {
 const main = () => {
     document.getElementById('sendButton').addEventListener("click", sendParameters)
 
-    window.addEventListener('keypress', function (e) {
+    document.getElementById('destination').addEventListener('keypress', e => {
         var key = e.which || e.keyCode;
         if (key === 13) { // 13 is enter
-            sendParameters
+            sendParameters()
         }
     });
 }
