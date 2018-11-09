@@ -25,11 +25,16 @@
   <div class="row col-lg-8 col-lg-offset-2">
     <button type="button" id="sendButton" class="btn btn-lg call-primary">Call ASR</button>
   </div>
+</div>
 
-  <div class="row align-items-end">
-    <div class="col-lg-4 col-lg-offset-6 align-items-center">
-      <p id="result" class="result"></p>
-    </div>
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div id="result"><img src="/public/Images/Loading_icon.gif" alt="Loading"></div>
   </div>
+
 </div>
 {{template "pageEnd.html" .}}

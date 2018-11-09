@@ -1,3 +1,5 @@
+const modal = document.getElementById('myModal')
+
 const pollResult = async (uuid) => {
     let url ='/result/' + uuid
 
@@ -20,9 +22,10 @@ const sendParameters = async () => {
     let number = document.getElementById("destination").value
 
     if (number === "") {
-        return
+        return false
     }
 
+    modal.style.display = "block"
     document.getElementById('destination').value = ""
 
     let body = {
@@ -37,12 +40,13 @@ const sendParameters = async () => {
         method: 'POST',
         body: JSON.stringify(body)
     }
-    console.log('backend url ' + url)
 
     let response = await fetch(url, param)
     let data = await response.json()
     console.log(JSON.stringify(data))
     pollResult(data.uuid)
+
+    return true
 }
 
 const keypress = e => {
@@ -53,10 +57,26 @@ const keypress = e => {
 }
 
 const main = () => {
-    document.getElementById('sendButton').addEventListener("click", sendParameters)
+    let btn = document.getElementById("sendButton")
+    // Get the <span> element that closes the modal
+    let span = document.getElementsByClassName("close")[0]
 
-    document.getElementById('destination').addEventListener('keypress', keypress);
-    document.getElementById('language').addEventListener('keypress', keypress);
+    btn.addEventListener("click", sendParameters)
+
+    document.getElementById('destination').addEventListener('keypress', keypress)
+    document.getElementById('language').addEventListener('keypress', keypress)
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = () => {
+        location.reload()
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = (event) => {
+        if (event.target == modal) {
+            location.reload()
+        }
+    }
 }
 
 window.addEventListener("load", main)

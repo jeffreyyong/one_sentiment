@@ -41,6 +41,7 @@ body {
 .btn {
   padding: 0.2rem 3rem;
 }
-p.result {
+#result {
   font-size: xx-large;
+  text-align: center;
 }
