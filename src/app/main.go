@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	log "github.com/sirupsen/logrus"
@@ -9,6 +10,7 @@ import (
 var host = "localhost:3003"
 var vapiURL = "https://api.nexmo.com/v1/calls"
 var token string
+var config *Config
 
 func getConfig() error {
 	if tokenEnv := os.Getenv("TOKEN"); tokenEnv != "" {
@@ -34,6 +36,16 @@ func getConfig() error {
 		logLevel = log.DebugLevel
 	}
 	log.SetLevel(logLevel)
+
+	// Get from config file
+	configFilePath := "config.yaml.local"
+	cfg, err := loadConfig(configFilePath)
+	config = cfg
+	if err != nil {
+		log.Error("Failed to load config: " + fmt.Sprintf("%v", err))
+		os.Exit(1)
+	}
+	log.Debug("Config " + fmt.Sprintf("%+v", cfg))
 	return nil
 }
 

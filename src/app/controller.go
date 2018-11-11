@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -39,7 +40,11 @@ func registerRoutes() *gin.Engine {
 			c.JSON(http.StatusBadRequest, nil)
 			return
 		}
-		uuid := CreateCall(number.Destination)
+		caller := NewCaller(number)
+		uuid, err := caller.Call()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, nil)
+		}
 		languages[uuid] = number.Language
 
 		c.JSON(http.StatusOK, struct {
@@ -64,9 +69,13 @@ func registerRoutes() *gin.Engine {
 
 	r.GET("/ncco", func(c *gin.Context) {
 		uuid := c.Query("uuid")
-		ncco := NewNCCO("[]", languages[uuid], uuid, "http://"+host+"/callback")
+		ncco, err := NewNCCO(config.NCCOEventURL, languages[uuid])
+		if err != nil {
+			log.Error("Failed to initialise NCCO " + fmt.Sprintf("%v", err))
+			c.JSON(http.StatusInternalServerError, nil)
+		}
 
-		c.Data(http.StatusOK, "application/json; charset=utf-8", []byte(ncco))
+		c.Data(http.StatusOK, "application/json; charset=utf-8", ncco)
 	})
 
 	r.Static("/public", "./public")

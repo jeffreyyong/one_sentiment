@@ -1,0 +1,23 @@
+---
+vapi_host:
+  lb1.crete.npe:5210
+
+bearer_token:
+  eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NDE5NzMzNjEsImp0aSI6Im1XZHdPTV9SSWE0U3huY1VHRFctUnNmd0ZtdGV4NmhINFA2aWlDbi13c0xLa1o5em9kNUxOUGpvcERkSkJyUk1ySzVvRzNmamdaYW5EMUpoMnJxd2F3PT0iLCJhcHBsaWNhdGlvbl9pZCI6Ijg3NGVjNTkwLTk1OGItNGNiYS1iMDA1LTk5YzRkMDY1NWMxMiIsImV4cCI6MTU0MjAxNjU2NH0.FMSbZVQTozVjBZGC6vXTxYdQrkljbTIRrKsYhSzkoVcISENAtj67TweczLeRjlm4Zw6Te4C1F3mPyU41kpArsTXhFkxeGtgL-soc2trd0j1Ff1QJPdXWWsthqmVTY6nH5UhxhF-mcuvklH5k7G_weOPXnsFiwSPTIgml6BYPxw9iNtcjaO8es-mpbN5OTV6IG1hlC2aHTCJBRhJUAxQz43_SDLVVx10d_UzNvqrMQJ7Cc-6xtKR-KtxwQLAgc2PvutNHfymICQkoBBTEhruLKwKJG3ODd-TBGcrMuo_niKEcKA7TYprFYg7mIwnJdqlHlG58O0QvfkqoSebWWby2VQ.
+
+destination_number:
+  447429541456
+
+source_number:
+  447429541456
+
+call_event_url:
+  loadtests.crete.npe:3003/callback
+
+answer_url:
+  loadtests.crete.npe:3003/ncco
+
+ncco_event_url:
+  loadtests.crete.npe:3003/callback
+
+
