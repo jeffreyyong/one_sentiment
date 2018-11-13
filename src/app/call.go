@@ -17,7 +17,7 @@ type CallRequest struct {
 	Destinations []Destination `json:"to"`
 	AnswerURL    []string      `json:"answer_url"`
 	EventURL     []string      `json:"event_url"`
-	Sources      []Source      `json:"from"`
+	Source       Source        `json:"from,omitempty"`
 }
 
 // CallResponse is an object that holds the call response
@@ -48,6 +48,7 @@ type Response struct {
 
 // Caller is a caller instance
 type Caller struct {
+	uuid              string
 	vapiHost          string
 	destinationNumber string
 	sourceNumber      string
@@ -71,7 +72,7 @@ func NewCaller(number Number) *Caller {
 
 // Call makes a call
 func (c *Caller) Call() (string, error) {
-	url := fmt.Sprintf("http://%s/v1/calls", c.vapiHost)
+	url := fmt.Sprintf("%s/v1/calls", c.vapiHost)
 
 	reqBody, err := c.buildCallReqBody()
 	if err != nil {
@@ -98,6 +99,7 @@ func (c *Caller) Call() (string, error) {
 			log.Error("Failed to unmashal to Call Response " + fmt.Sprintf("%v", err))
 			return "", err
 		}
+		log.Debug("CallResponse: " + fmt.Sprintf("%v", callResp))
 		uuid = callResp.UUID
 	} else {
 		log.Errorf("Failed to make a call, status code: %v, resp body: %v", resp.StatusCode, string(resp.Body))
@@ -108,12 +110,12 @@ func (c *Caller) Call() (string, error) {
 
 func (c *Caller) buildCallReqBody() ([]byte, error) {
 	destinations := []Destination{{"phone", c.destinationNumber}}
-	sources := []Source{{"phone", c.sourceNumber}}
+	source := Source{"phone", c.sourceNumber}
 
 	call := CallRequest{
 		Destinations: destinations,
-		Sources:      sources,
-		EventURL:     []string{c.eventURL},
+		Source:       source,
+		EventURL:     []string{""},
 		AnswerURL:    []string{c.answerURL},
 	}
 	reqBody, err := json.Marshal(call)
@@ -126,7 +128,7 @@ func (c *Caller) buildCallReqBody() ([]byte, error) {
 }
 
 func performRequest(req *http.Request, bearerToken string) (*Response, error) {
-	bearerToken = "Bearer " + bearerToken
+	bearerToken = "Bearer " + "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NDE4NzQ5NTEsImp0aSI6InRfVzZudjlKdjgtSTZnQUcyTHF5WF9RV1VqR05xQ1ZTTWFOd1c1TDMzUEFsV0dnSDFsbTFoMGtDZmhPME1aNGxIb0h4VGI2RUVIczJnNm5DVlhMTWZ3PT0iLCJhcHBsaWNhdGlvbl9pZCI6ImMxMjk5Nzk5LWJiNWUtNDQwYS05ZWUxLTljMTZmODBiMjhlOCIsImV4cCI6MTU0NDQ2Njk1NH0.jyvaBTSkDMl8ShR6tku-X4kE88arWXB8FDMvD2t7CbbxPXoTmMLCSyMQPU9oo2Rg1FcgklQ9kUJTI5RYRQEqtan8dDtMQSloNREhvlevj6M5m7m_cQOuxGA0G1BN0cHpbOw3dSiXj-DkRFz2ytoijhC8nSuGzGkW8XYNTmPP17tL9BRtSHT3de-8sCKKXYGGJ5-3Hu5VSq6eyFF2dfCVCwi1yNRQJiA6c7JzNCuLeg1RPKOUfpAcK_5lh_LS91aKjMyT8k5O22DRZ2Ewcm_h72Hxfe9ToURnKvLgrGiW0qU4TFfEY5R813whrt21OJvfAlDDOQKG81AtKDB_oDAsAg"
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Add("Authorization", bearerToken)
 

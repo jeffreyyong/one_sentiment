@@ -42,10 +42,13 @@ func registerRoutes() *gin.Engine {
 		}
 		caller := NewCaller(number)
 		uuid, err := caller.Call()
+		log.Debug("UUID of call: " + fmt.Sprintf("%v", uuid))
+
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, nil)
 		}
 		languages[uuid] = number.Language
+		caller.uuid = uuid
 
 		c.JSON(http.StatusOK, struct {
 			UUID string `json:"uuid"`
@@ -69,12 +72,13 @@ func registerRoutes() *gin.Engine {
 
 	r.GET("/ncco", func(c *gin.Context) {
 		uuid := c.Query("uuid")
-		ncco, err := NewNCCO(config.NCCOEventURL, languages[uuid])
+		ncco, err := NewNCCO(config.NCCOEventURL, languages[uuid], uuid)
 		if err != nil {
 			log.Error("Failed to initialise NCCO " + fmt.Sprintf("%v", err))
 			c.JSON(http.StatusInternalServerError, nil)
 		}
 
+		log.Debug("NCCO " + string(ncco))
 		c.Data(http.StatusOK, "application/json; charset=utf-8", ncco)
 	})
 
