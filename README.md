@@ -2,7 +2,7 @@
 
 ## Demo
 
-A demo of the demo app is availaible: http://loadtest.crete.npe:3003/
+A demo of the demo app is available: http://loadtest.crete.npe:3003/
 
 ## Sequence
 
@@ -26,7 +26,7 @@ Backend-->Client: 200 OK/{"result": "Some text"}
 The application will have the following endpoints:
 
 - `GET /`: send `index.html`
-- `PUT /asr/:phone_number/:id`: call VAPI with the NCCO for the ASR scenario
+- `POST /asr`: call VAPI with the NCCO for the ASR scenario
 - `GET /result/:id`: send the current result for the `id`
 - `POST /callback`: to receive VAPI callbacks
 - `GET /ncco`: return the NCCO to trigger ASR

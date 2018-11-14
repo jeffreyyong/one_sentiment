@@ -38,7 +38,7 @@ func getConfig() error {
 	log.SetLevel(logLevel)
 
 	// Get from config file
-	configFilePath := "config.yaml.local"
+	configFilePath := "config.yaml"
 	cfg, err := loadConfig(configFilePath)
 	config = cfg
 	if err != nil {
