@@ -1,0 +1,16 @@
+[Unit]
+Description=asr_demo
+After=network.target
+
+[Service]
+Type=simple
+PIDFile=/run/asr_demo.pid
+User=demo
+ExecStart=/home/demo/app -c=/home/demo/config.yaml
+Restart=on-failure
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=asr_demo
+
+[Install]
+WantedBy=multi-user.target

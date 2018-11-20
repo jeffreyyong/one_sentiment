@@ -18,7 +18,7 @@ func registerRoutes() *gin.Engine {
 	languages = make(map[string]string)
 	results = make(map[string]string)
 	// Serve HTML/JS page
-	r.LoadHTMLGlob("templates/**/*.html")
+	r.LoadHTMLGlob(config.TemplatePath + "/**/*.html")
 	r.Any("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", nil)
 	})
@@ -82,6 +82,6 @@ func registerRoutes() *gin.Engine {
 		c.Data(http.StatusOK, "application/json; charset=utf-8", ncco)
 	})
 
-	r.Static("/public", "./public")
+	r.Static("/public", config.PublicFiles)
 	return r
 }

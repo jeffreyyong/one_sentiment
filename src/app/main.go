@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"flag"
 	"fmt"
 	"os"
 
@@ -11,6 +13,22 @@ var host = "localhost:3003"
 var vapiURL = "https://api.nexmo.com/v1/calls"
 var token string
 var config *Config
+
+var (
+	configFilePathPtr = flag.String("c", "client-config.yaml", "Path to configuration file")
+)
+
+func parseCommandArgs() error {
+	flag.Parse()
+
+	if *configFilePathPtr == "" {
+		errMsg := "Error: You have to provide the file path to the config"
+		log.Error(errMsg)
+		flag.Usage()
+		return errors.New(errMsg)
+	}
+	return nil
+}
 
 func getConfig() error {
 	if tokenEnv := os.Getenv("TOKEN"); tokenEnv != "" {
@@ -37,8 +55,13 @@ func getConfig() error {
 	}
 	log.SetLevel(logLevel)
 
-	// Get from config file
 	configFilePath := "config.yaml"
+	if err := parseCommandArgs(); err == nil {
+		configFilePath = "config.yaml"
+		configFilePath = *configFilePathPtr
+	}
+
+	// Get from config file
 	cfg, err := loadConfig(configFilePath)
 	config = cfg
 	if err != nil {
@@ -58,5 +81,5 @@ func main() {
 
 	r := registerRoutes()
 
-	r.Run(":3003")
+	r.Run(config.Addr)
 }

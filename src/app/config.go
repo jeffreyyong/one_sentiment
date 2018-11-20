@@ -15,6 +15,9 @@ type Config struct {
 	CallEventURL string `yaml:"call_event_url"`
 	AnswerURL    string `yaml:"answer_url"`
 	NCCOEventURL string `yaml:"ncco_event_url"`
+	TemplatePath string `yaml:"templates"`
+	PublicFiles  string `yaml:"public"`
+	Addr         string `yaml:"address"`
 }
 
 // loadConfig loads the config given the file path
@@ -53,6 +56,18 @@ func loadConfig(path string) (*Config, error) {
 
 	if cfg.AnswerURL == "" {
 		return nil, fmt.Errorf("Missing answer url")
+	}
+
+	if cfg.Addr == "" {
+		return nil, fmt.Errorf("Missing address")
+	}
+
+	if cfg.TemplatePath == "" {
+		cfg.TemplatePath = "templates"
+	}
+
+	if cfg.PublicFiles == "" {
+		cfg.PublicFiles = "public"
 	}
 
 	return cfg, nil
