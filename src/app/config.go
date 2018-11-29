@@ -18,6 +18,7 @@ type Config struct {
 	TemplatePath string `yaml:"templates"`
 	PublicFiles  string `yaml:"public"`
 	Addr         string `yaml:"address"`
+	GoogleCred   string `yaml:"google_cred"`
 }
 
 // loadConfig loads the config given the file path
@@ -68,6 +69,10 @@ func loadConfig(path string) (*Config, error) {
 
 	if cfg.PublicFiles == "" {
 		cfg.PublicFiles = "public"
+	}
+
+	if cfg.GoogleCred == "" {
+		return nil, fmt.Errorf("Missing google credential")
 	}
 
 	return cfg, nil

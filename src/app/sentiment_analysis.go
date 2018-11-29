@@ -24,7 +24,7 @@ type SentimentAnalysisService struct {
 
 // NewSentimentAnalysisService initialises a new instance of sentiment analysis service
 func NewSentimentAnalysisService() (*SentimentAnalysisService, error) {
-	if err := os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "/home/demo/google_credentials.json"); err != nil {
+	if err := os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", config.GoogleCred); err != nil {
 		return nil, err
 	}
 
