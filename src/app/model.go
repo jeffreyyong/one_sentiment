@@ -41,7 +41,7 @@ type Result struct {
 	Word      string   `json:"word,omitempty"`
 	Entities  []Entity `json:"entities ,omitempty"`
 	Language  string   `json:"language,omitempty"`
-	Sentiment string   `json:"sentiment,omitempty"`
+	Sentiment float32  `json:"sentiment,omitempty"`
 }
 
 // Entity holds entity of the syntax

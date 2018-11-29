@@ -80,33 +80,7 @@ func (sas *SentimentAnalysisService) Analyse(text string) (*Result, error) {
 		return nil, err
 	}
 
-	sentiment := computeSentiment(sentimentResult.DocumentSentiment.GetScore())
-
-	finalResult.Sentiment = sentiment
+	finalResult.Sentiment = sentimentResult.DocumentSentiment.GetScore()
 
 	return finalResult, nil
-}
-
-func computeSentiment(sentimentScore float32) string {
-
-	var sentiment string
-
-	switch {
-	case sentimentScore < -0.9:
-		sentiment = "very negative"
-	case sentimentScore < -0.6:
-		sentiment = "medium negative"
-	case sentimentScore < -0.3:
-		sentiment = "slighly negative"
-	case sentimentScore < -0.0:
-		sentiment = "neutral"
-	case sentimentScore < 0.3:
-		sentiment = "slightly positive"
-	case sentimentScore < 0.6:
-		sentiment = "medium positive"
-	case sentimentScore < 0.9:
-		sentiment = "very positive"
-	}
-
-	return sentiment
 }
