@@ -73,6 +73,8 @@ func registerRoutes() *gin.Engine {
 			if err != nil {
 				log.Error("Failed to analyse result: " + fmt.Sprintf("%v", err))
 			}
+			result.Word = cbResults[0].Text
+			result.Language = languages[cb.UUID]
 
 			results[cb.UUID] = result
 		}
