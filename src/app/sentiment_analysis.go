@@ -43,7 +43,7 @@ func NewSentimentAnalysisService() (*SentimentAnalysisService, error) {
 // Analyse analyses the text
 func (sas *SentimentAnalysisService) Analyse(text string) (*Result, error) {
 
-	var finalResult *Result
+	finalResult := &Result{}
 
 	ctx := context.Background()
 	entityResult, err := sas.googleLanguageClient.AnalyzeEntities(ctx, &languagepb.AnalyzeEntitiesRequest{
