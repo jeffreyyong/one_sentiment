@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
+	"time"
 
 	language "cloud.google.com/go/language/apiv1"
 	languagepb "google.golang.org/genproto/googleapis/cloud/language/v1"
@@ -12,7 +14,7 @@ import (
 
 // ISentimentAnalysis is the sentiment analsysis interface
 type ISentimentAnalysis interface {
-	Analyse(text string) (Result, error)
+	Analyse(text string) (*Result, error)
 }
 
 // SentimentAnalysisService contains the Google Client for doing sentiment analysis
@@ -20,10 +22,28 @@ type SentimentAnalysisService struct {
 	googleLanguageClient *language.Client
 }
 
-// Analyse analyses the text
-func (sas *SentimentAnalysisService) Analyse(text string) (Result, error) {
+// NewSentimentAnalysisService initialises a new instance of sentiment analysis service
+func NewSentimentAnalysisService() (*SentimentAnalysisService, error) {
+	if err := os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "/home/demo/google_credentials.json"); err != nil {
+		return nil, err
+	}
 
-	var finalResult Result
+	sas := &SentimentAnalysisService{}
+	backgroundContext := context.Background()
+	ctx, cancel := context.WithTimeout(backgroundContext, 5*time.Second)
+	defer cancel()
+	googleClient, err := language.NewClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	sas.googleLanguageClient = googleClient
+	return sas, nil
+}
+
+// Analyse analyses the text
+func (sas *SentimentAnalysisService) Analyse(text string) (*Result, error) {
+
+	var finalResult *Result
 
 	ctx := context.Background()
 	entityResult, err := sas.googleLanguageClient.AnalyzeEntities(ctx, &languagepb.AnalyzeEntitiesRequest{
@@ -38,6 +58,7 @@ func (sas *SentimentAnalysisService) Analyse(text string) (Result, error) {
 
 	if err != nil {
 		log.Error("Failed to analyse entity" + fmt.Sprintf("%v", err))
+		return nil, err
 	}
 
 	for _, entityResult := range entityResult.Entities {
@@ -56,12 +77,14 @@ func (sas *SentimentAnalysisService) Analyse(text string) (Result, error) {
 
 	if err != nil {
 		log.Error("Failed to analyse sentiment" + fmt.Sprintf("%v", err))
+		return nil, err
 	}
 
 	sentiment := computeSentiment(sentimentResult.DocumentSentiment.GetScore())
 
 	finalResult.Sentiment = sentiment
 
+	return finalResult, nil
 }
 
 func computeSentiment(sentimentScore float32) string {
@@ -86,5 +109,4 @@ func computeSentiment(sentimentScore float32) string {
 	}
 
 	return sentiment
-
 }

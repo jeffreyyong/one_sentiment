@@ -8,7 +8,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var results map[string]Result
+var results map[string]*Result
 var languages map[string]string
 
 func registerRoutes() *gin.Engine {
@@ -16,7 +16,7 @@ func registerRoutes() *gin.Engine {
 	r := gin.Default()
 
 	languages = make(map[string]string)
-	results = make(map[string]string)
+	results = make(map[string]*Result)
 	// Serve HTML/JS page
 	r.LoadHTMLGlob(config.TemplatePath + "/**/*.html")
 	r.Any("/", func(c *gin.Context) {
@@ -27,7 +27,7 @@ func registerRoutes() *gin.Engine {
 		id := c.Param("id")
 		if result, ok := results[id]; ok {
 			c.JSON(http.StatusOK, struct {
-				Result string `json:"result"`
+				Result *Result `json:"result"`
 			}{Result: result})
 		}
 	})
@@ -64,7 +64,17 @@ func registerRoutes() *gin.Engine {
 		if len(cbResults) < 1 {
 			log.Error("No result in callback")
 		} else {
-			results[cb.UUID] = cbResults[0].Text
+			sas, err := NewSentimentAnalysisService()
+			if err != nil {
+				log.Error("Failed to initialise sentiment analysis service: " + fmt.Sprintf("%v", err))
+				return
+			}
+			result, err := sas.Analyse(cbResults[0].Text)
+			if err != nil {
+				log.Error("Failed to analyse result: " + fmt.Sprintf("%v", err))
+			}
+
+			results[cb.UUID] = result
 		}
 
 		c.JSON(http.StatusOK, nil)
