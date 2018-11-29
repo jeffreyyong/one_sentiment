@@ -35,3 +35,6 @@ type callback struct {
 	UUID   string    `json:"uuid"`
 	Speech speechASR `json:"Speech"`
 }
+
+type Result struct {
+}

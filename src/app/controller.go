@@ -8,7 +8,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var results map[string]string
+var results map[string]Result
 var languages map[string]string
 
 func registerRoutes() *gin.Engine {
