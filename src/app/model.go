@@ -36,5 +36,16 @@ type callback struct {
 	Speech speechASR `json:"Speech"`
 }
 
+// Result is stores the result
 type Result struct {
+	Word      string   `json:"word,omitempty"`
+	Entities  []Entity `json:"entities ,omitempty"`
+	Language  string   `json:"language,omitempty"`
+	Sentiment string   `json:"sentiment,omitempty"`
+}
+
+// Entity holds entity of the syntax
+type Entity struct {
+	Type     string  `json:"entity,omitempty"`
+	Salience float32 `json:"salience,omitempty"`
 }

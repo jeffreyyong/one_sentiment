@@ -1,0 +1,114 @@
+{
+    "to": [
+        {
+            "type": "phone",
+            "number": "12025550000"
+        }
+    ],
+    "answer_url": [
+        "https://static.dev.nexmoinc.net/svc/ncco/ncco/auto_ncco_answer_url_method.php?from_number=447700900999"
+    ],
+    "from": {
+        "type": "phone",
+        "number": "447700900000"
+    },
+    "answer_method": "GET"
+}
+
+
+{
+   "to":[{
+       "type": "phone",
+       "number": "{{jamie}}"
+   }],
+   "from": {
+       "type": "phone",
+       "number": "{{john}}"
+   },
+   "answer_url": ["http://178.62.73.4/nexmo/vapi/ncco_connect_input.json"],
+   "event_url": ["http://178.62.73.4/callbacks.html"],
+   "event_method": "GET"
+}
+
+
+
+{
+    "to": [
+        {
+            "type": "phone",
+            "number": "441174960004"
+        }
+    ],
+    "answer_url": [
+        "http://178.62.73.4/nexmo/vapi/auto_ncco_connect_asr.php?event_url=https%3A%2F%2Fcrete-tools.npe.nexmo.io%2Fcallback_json%3Fqa_unique_id%3D0U74DiZjQodkzR-7zzHcOFSsMn3Eqoxy_Is9Pbji0NkQoXxIYwdMP6Z55sWm2uWWjF4Ws-k4ZwLyygYIE3loIA%253D%253D%26qa_type%3Dasr&language=en-gb&context=%5B%22one%22%2C%22two%22%2C%22three%22%2C%22four%22%5D&end_on_silence=2"
+    ],
+    "event_url": [
+        "https://crete-tools.npe.nexmo.io/callback_json?qa_unique_id=0U74DiZjQodkzR-7zzHcOFSsMn3Eqoxy_Is9Pbji0NkQoXxIYwdMP6Z55sWm2uWWjF4Ws-k4ZwLyygYIE3loIA=="
+    ],
+    "from": {
+        "type": "phone",
+        "number": "447700900000"
+    }
+}
+
+
+
+
+
+[
+    {
+        eventUrl: ["https://crete-tools.npe.nexmo.io/callback_json?qa_unique_id=0U74DiZjQodkzR-7zzHcOFSsMn3Eqoxy_Is9Pbji0NkQoXxIYwdMP6Z55sWm2uWWjF4Ws-k4ZwLyygYIE3loIA%3D%3D&qa_type=asr"],
+        action: "input",
+        speech: {
+            context: [
+                "one",
+                "two",
+                "three",
+                "four"
+            ],
+            uuid: [""],
+            language: "en-gb"
+        }
+    }
+]
+
+
+Call response
+{
+    "uuid": "be7ef5bd-51e4-4e7a-bd33-fb91ee54f732",
+    "status": "started",
+    "direction": "outbound",
+    "conversation_uuid": "CON-39a90942-d66f-4bb0-bb3f-47ffb5d7020d"
+}
+
+
+
+[
+  {
+    "action": "talk",
+    "text": "Tell us your credit card pin."
+  },
+  {
+    "action": "input",
+    "speech": {
+      "context": %v,
+      "language": "%v",
+      "uuid": [
+        "%v"
+      ],
+      "endOnSilence": 2
+    },
+    "dtmf": {
+      "submitOnHash": true,
+      "maxDigits": 4,
+      "timeOut": 5
+    },
+    "eventUrl": [
+      "%v"
+    ]
+  },
+  {
+    "action": "talk",
+    "text": "Thank you very much."
+  }
+]

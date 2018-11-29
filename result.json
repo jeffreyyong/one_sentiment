@@ -1,0 +1,9 @@
+{
+    "word": <string>,
+    "language": <string>,
+    "sentiment": <string for now, but good with emoji>,
+    "entities": [
+        {"entity": <string>, "salience": <string>},
+        {"entity": <string>, "salience": <string>}
+    ]
+}
